@@ -6,7 +6,7 @@ include(DownloadUserver)
 
 find_package(
     userver
-    COMPONENTS core #
+    COMPONENTS postgresql core #
     QUIET
 )
 if(NOT userver_FOUND)
@@ -17,18 +17,18 @@ endif()
 userver_setup_environment()
 
 # Common sources
-include_directories(src)
+file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]pp)
+file(GLOB_RECURSE UNIT_TEST_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*_test.cpp)
+list(REMOVE_ITEM SOURCES ${UNIT_TEST_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/greeting_benchmark.cpp)
 
-add_library(
-    ${PROJECT_NAME}_objs OBJECT
-    src/greeting.cpp #
-    src/hello.cpp #
-)
+
+add_library(${PROJECT_NAME}_objs OBJECT ${SOURCES})
+include_directories(src)
 target_link_libraries(
     ${PROJECT_NAME}_objs
-    PUBLIC userver::core #
+    PUBLIC userver::core userver::postgresql#
 )
-
 
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)

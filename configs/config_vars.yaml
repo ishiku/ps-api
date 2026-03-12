@@ -5,3 +5,5 @@ logger-level: info
 is-testing: false
 
 server-port: 8080
+
+dbconnection: 'postgresql://postgres:postgres@192.168.0.174:5432/ps_api

@@ -6,6 +6,7 @@
 #include <userver/congestion_control/component.hpp>
 #include <userver/server/handlers/ping.hpp>
 #include <userver/server/handlers/tests_control.hpp>
+#include <userver/storages/postgres/component.hpp>
 #include <userver/testsuite/testsuite_support.hpp>
 
 
@@ -19,6 +20,7 @@ int main(int argc, char* argv[]) {
             .Append<userver::server::handlers::Ping>()
             .Append<userver::components::TestsuiteSupport>()
             .AppendComponentList(userver::clients::http::ComponentList())
+            .Append<userver::components::Postgres>("ps-api-database")
             .Append<userver::clients::dns::Component>()
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
